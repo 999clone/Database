@@ -10,14 +10,14 @@ public class Database {
 
     public static void add(Entity e) {
         e.id = UUID++;
-        entities.add(e.copy());
+        entities.add(e.clone());
     }
 
     public static Entity get(int id) throws EntityNotFoundException {
         boolean found = false;
         for (Entity e : entities) {
             if (e.id == id) {
-                return e.copy();
+                return e.clone();
             }
         }
         throw new EntityNotFoundException(id);
@@ -42,7 +42,7 @@ public class Database {
         boolean found = false;
         for (int i = 0; i < entities.size(); i++) {
             if (e.id == entities.get(i).id) {
-                entities.set(i, e.copy());
+                entities.set(i, e.clone());
                 found = true;
                 break;
             }

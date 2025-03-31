@@ -3,7 +3,7 @@ import example.Human;
 
 public class Main {
     public static void main(String[] args) {
-        Human ali = new Human("Ali");
+        Human ali = new Human("Ali", 11);
         Database.add(ali);
 
         ali.name = "Ali Hosseini";

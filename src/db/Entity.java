@@ -11,4 +11,5 @@ public abstract class Entity implements Cloneable {
             throw new RuntimeException("Clone not supported", e);
         }
     }
+    public abstract int getEntityCode();
 }

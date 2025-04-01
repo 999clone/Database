@@ -1,6 +1,7 @@
 package todo.service;
 
 import db.Database;
+import db.Entity;
 import db.exception.EntityNotFoundException;
 import todo.entity.Task;
 import todo.validator.TaskValidator;
@@ -27,34 +28,59 @@ public class TaskService {
                 System.out.println("Invalid date format. Please use yyyy-mm-dd.");
                 return;
             }
+            Task task = new Task();
+            task.setTitle(title);
+            task.setDescription(description);
+            task.setDueDate(dueDate);
 
-            checkTaskValidity(title, description, dueDate);
+            checkTaskValidity(task);
 
-            saveTask(title, description, dueDate);
+            saveTask(task);
 
-
-        }catch (Exception e){
+        }catch (IllegalArgumentException e){
+            System.out.println("Cannot add task.");
             System.out.println(e.getMessage());
         }
     }
 
-    public static void checkTaskValidity(String title, String description, Date dueDate) {
-        TaskValidator taskValidator = new TaskValidator();
+    public static void deleteEntity(Scanner scanner) {
+        int id = -1;
+        try {
+            System.out.println("ID: ");
+             id = scanner.nextInt();
+            scanner.nextLine();
 
-        Task task = new Task();
-        task.setTitle(title);
-        task.setDescription(description);
-        task.setDueDate(dueDate);
-        task.setStatus(Task.Status.NOT_STARTED);
-        taskValidator.validate(task);
+            Entity entity = Database.get(id);
+            if (entity instanceof Task)
+                StepService.deleteStepsOfTask(id);
+            Database.delete(id);
+            System.out.println("Entity with ID=" + id + " successfully deleted.");
+
+        } catch (NumberFormatException e) {
+            System.out.println("Cannot delete entity.");
+            System.out.println("Error: Invalid ID format.");
+        }  catch (EntityNotFoundException e ) {
+            System.out.println("Cannot delete entity with ID=" + id + ".");
+            System.out.println("Error: " + e.getMessage());
+
+        } catch (Exception e) {
+            System.out.println("Cannot delete entity.");
+            System.out.println("Error: " + e.getMessage());
+        }
 
     }
 
-    public static void saveTask(String title, String description, Date duedate) {
-        Task task = new Task();
-        task.setTitle(title);
-        task.setDescription(description);
-        task.setDueDate(duedate);
+    public static void checkTaskValidity(Task task) {
+        try {
+            TaskValidator taskValidator = new TaskValidator();
+            taskValidator.validate(task);
+        }catch (IllegalArgumentException e){
+            System.out.println("Cannot add task.");
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void saveTask(Task task) {
         task.setStatus(Task.Status.NOT_STARTED);
         Database.add(task);
         System.out.println("Task saved successfully.");

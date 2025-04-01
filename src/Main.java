@@ -13,7 +13,7 @@ public class Main {
         System.out.println("Document added");
 
         System.out.println("id: " + doc.id);
-        System.out.println("content: " + doc.content);
+        System.out.println("content: " + doc.getContent());
         System.out.println("creation date: " + doc.getCreationDate());
         System.out.println("last modification date: " + doc.getLastModificationDate());
         System.out.println();
@@ -24,13 +24,13 @@ public class Main {
             System.out.println("Sleep interrupted!");
         }
 
-        doc.content = "This is the new content";
+        doc.setContent("This is the new content");
 
         Database.update(doc);
 
         System.out.println("Document updated");
         System.out.println("id: " + doc.id);
-        System.out.println("content: " + doc.content);
+        System.out.println("content: " + doc.getContent());
         System.out.println("creation date: " + doc.getCreationDate());
         System.out.println("last modification date: " + doc.getLastModificationDate());
     }

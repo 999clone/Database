@@ -6,9 +6,9 @@ import db.Trackable;
 import java.util.Date;
 
 public class Document extends Entity implements Trackable {
-    public String content;
-    public Date creationDate;
-    public Date lastModificationDate;
+    private String content;
+    private Date creationDate;
+    private Date lastModificationDate;
 
     public Document(String content) {
         this.content = content;
@@ -17,6 +17,12 @@ public class Document extends Entity implements Trackable {
     @Override
     public void setCreationDate(Date date) {
         this.creationDate = date;
+    }
+    public String getContent() {
+        return content;
+    }
+    public void setContent(String content) {
+        this.content = content;
     }
 
     @Override

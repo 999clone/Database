@@ -56,6 +56,7 @@ public class StepService {
         try {
             Step step = new Step();
             ArrayList<Entity> steps = Database.getAll(step.getEntityCode());
+
             for (Entity stepEntity : steps) {
                 step = (Step) stepEntity;
                 if (step.getTaskRef() == id) {

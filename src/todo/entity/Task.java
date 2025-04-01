@@ -63,6 +63,6 @@ public class Task extends Entity implements Trackable {
 
     @Override
     public int getEntityCode() {
-        return 0;
+        return 12;
     }
 }

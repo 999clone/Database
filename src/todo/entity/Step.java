@@ -1,12 +1,14 @@
 package todo.entity;
 
 import db.Entity;
+import db.Trackable;
 
-public class Step extends Entity {
+import java.util.Date;
+
+public class Step extends Entity implements Trackable {
     private String title;
     private Status status;
     private int taskRef;
-
 
     public enum Status {
         NOT_STARTED,
@@ -32,9 +34,29 @@ public class Step extends Entity {
         return taskRef;
     }
 
+    @Override
+    public void setCreationDate(Date date) {
+        setCreationDate(date);
+    }
+
+    @Override
+    public Date getCreationDate() {
+        return getCreationDate();
+    }
+
+    @Override
+    public void setLastModificationDate(Date date) {
+        setLastModificationDate(date);
+    }
+
+    @Override
+    public Date getLastModificationDate() {
+        return getCreationDate();
+    }
+
 
     @Override
     public int getEntityCode() {
-        return 0;
+        return 13;
     }
 }

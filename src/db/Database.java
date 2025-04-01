@@ -4,6 +4,7 @@ import db.exception.EntityNotFoundException;
 import example.HumanValidator;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 public class Database {
@@ -12,10 +13,17 @@ public class Database {
     static int UUID = 1000;
 
     public static void add(Entity e) {
-        e.id = UUID++;
-        entities.add(e.clone());
         Validator validator = validators.get(e.getEntityCode());
-        validator.validate(e);
+        if (validator != null)
+            validator.validate(e);
+
+        e.id = UUID++;
+        if (e instanceof Trackable trackable) {
+            Date now = new Date();
+            trackable.setCreationDate(now);
+            trackable.setLastModificationDate(now);
+        }
+        entities.add(e.clone());
     }
 
     public static Entity get(int id) throws EntityNotFoundException {
@@ -47,10 +55,15 @@ public class Database {
         boolean found = false;
 
         Validator validator = validators.get(e.getEntityCode());
-        validator.validate(e);
+        if (validator != null)
+            validator.validate(e);
+
 
         for (int i = 0; i < entities.size(); i++) {
             if (e.id == entities.get(i).id) {
+                if (e instanceof Trackable trackable) {
+                    trackable.setLastModificationDate(new Date());
+                }
                 entities.set(i, e.clone());
                 found = true;
                 break;
@@ -60,6 +73,7 @@ public class Database {
             throw new EntityNotFoundException(e.id);
         }
     }
+
     public static void registerValidator(int entityCode, Validator validator) {
         if (validators.containsValue(entityCode)) {
             throw new IllegalArgumentException("Entity with code " + entityCode + " already exists");

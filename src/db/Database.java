@@ -80,4 +80,13 @@ public class Database {
         }
         validators.put(entityCode, validator);
     }
+    public static ArrayList<Entity> getAll(int entityCode) {
+        ArrayList<Entity> result = new ArrayList<>();
+        for (Entity e : entities) {
+            if (e.getEntityCode() == entityCode) {
+                result.add(e);
+            }
+        }
+        return result;
+    }
 }

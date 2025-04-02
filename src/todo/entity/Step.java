@@ -9,6 +9,8 @@ public class Step extends Entity implements Trackable {
     private String title;
     private Status status;
     private int taskRef;
+    private Date creationDate;
+    private Date lastModificationDate;
 
     public enum Status {
         NOT_STARTED,
@@ -36,27 +38,28 @@ public class Step extends Entity implements Trackable {
 
     @Override
     public void setCreationDate(Date date) {
-        setCreationDate(date);
+        this.creationDate = date;
     }
 
     @Override
     public Date getCreationDate() {
-        return getCreationDate();
+        return creationDate;
     }
 
     @Override
     public void setLastModificationDate(Date date) {
-        setLastModificationDate(date);
+        this.lastModificationDate = date;
     }
 
     @Override
     public Date getLastModificationDate() {
-        return getCreationDate();
+        return lastModificationDate;
     }
 
 
     @Override
     public int getEntityCode() {
-        return 13;
+        return 100;
     }
+
 }

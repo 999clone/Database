@@ -2,6 +2,7 @@ package todo.service;
 
 import db.Database;
 import db.Entity;
+import db.exception.EntityNotFoundException;
 import todo.entity.Step;
 import todo.validator.StepValidator;
 
@@ -34,6 +35,8 @@ public class StepService {
         } catch (IllegalArgumentException e) {
             System.out.println("Cannot add step.");
             System.out.println("Error: " + e.getMessage());
+        }catch (EntityNotFoundException e){
+            System.out.println(e.getMessage());
         }
 
     }
@@ -47,8 +50,8 @@ public class StepService {
     public static void saveStep(Step step) {
         step.setStatus(Step.Status.NOT_STARTED);
         Database.add(step);
-        System.out.println("Step saved successfully.");
-        System.out.println("ID: " + step.getTaskRef());
+        System.out.println("Step added to task with taskID" + step.getTaskRef() + "successfully.");
+        System.out.println("ID: " + step.id);
         System.out.println("Creation Date: " + step.getCreationDate());
     }
 
@@ -60,7 +63,7 @@ public class StepService {
             for (Entity stepEntity : steps) {
                 step = (Step) stepEntity;
                 if (step.getTaskRef() == id) {
-                    Database.delete(step.getTaskRef());
+                    Database.delete(step.id);
                 }
             }
         } catch (Exception e) {

@@ -10,6 +10,8 @@ public class Task extends Entity implements Trackable {
     private String description;
     private Date dueDate;
     private Status status;
+    private Date creationDate;
+    private Date lastModificationDate;
 
     public enum Status {
         NOT_STARTED,
@@ -43,22 +45,22 @@ public class Task extends Entity implements Trackable {
 
     @Override
     public void setCreationDate(Date date) {
-        setCreationDate(date);
+        this.creationDate = date;
     }
 
     @Override
     public Date getCreationDate() {
-        return getCreationDate();
+        return creationDate;
     }
 
     @Override
     public void setLastModificationDate(Date date) {
-        setLastModificationDate(date);
+        this.lastModificationDate = date;
     }
 
     @Override
     public Date getLastModificationDate() {
-        return getLastModificationDate();
+        return lastModificationDate;
     }
 
     @Override

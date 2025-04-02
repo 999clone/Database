@@ -2,6 +2,7 @@ package db;
 
 import db.exception.EntityNotFoundException;
 import example.HumanValidator;
+import todo.entity.Step;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,14 +11,16 @@ import java.util.HashMap;
 public class Database {
     private static ArrayList<Entity> entities = new ArrayList<>();
     private static HashMap<Integer, Validator> validators = new HashMap<>();
-    static int UUID = 1000;
+    public static int UUID = 1000;
 
     public static void add(Entity e) {
         Validator validator = validators.get(e.getEntityCode());
         if (validator != null)
             validator.validate(e);
 
-        e.id = UUID++;
+            e.id = UUID;
+            UUID++;
+
         if (e instanceof Trackable trackable) {
             Date now = new Date();
             trackable.setCreationDate(now);

@@ -44,7 +44,7 @@ public class TaskService {
     }
 
     public static void deleteEntity(Scanner scanner) {
-        int id = -1;
+        int id = 0;
         try {
             System.out.println("ID: ");
              id = scanner.nextInt();
@@ -53,7 +53,8 @@ public class TaskService {
             Entity entity = Database.get(id);
             if (entity instanceof Task)
                 StepService.deleteStepsOfTask(id);
-            Database.delete(id);
+            else
+                Database.delete(id);
             System.out.println("Entity with ID=" + id + " successfully deleted.");
 
         } catch (NumberFormatException e) {

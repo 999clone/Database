@@ -104,7 +104,8 @@ public class TaskService {
                     case "status":
                         oldValue = task.getStatus().toString();
                         task.setStatus(Task.Status.valueOf(newValue));
-                        StepService.changeAllStepsStatus(task);
+                        if (task.getStatus() == Task.Status.COMPLETED)
+                            StepService.changeAllStepsStatus(task);
                     default:
                         System.out.println("Invalid field.");
                 }

@@ -18,8 +18,8 @@ public class Database {
         if (validator != null)
             validator.validate(e);
 
-            e.id = UUID;
-            UUID++;
+        e.id = UUID;
+        UUID++;
 
         if (e instanceof Trackable trackable) {
             Date now = new Date();

@@ -7,7 +7,10 @@ import todo.entity.Step;
 import todo.entity.Task;
 import todo.validator.TaskValidator;
 import java.text.SimpleDateFormat;
+import java.time.DateTimeException;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -26,7 +29,11 @@ public class TaskService {
             String dueDateString = scanner.nextLine();
 
             Date dueDate = parseDate(dueDateString);
-            if (dueDate == null) {
+            if (dueDate == null ) {
+                System.out.println("Invalid date format. Please use yyyy-mm-dd.");
+                return;
+            }
+            if (!isValidDate(dueDateString)) {
                 System.out.println("Invalid date format. Please use yyyy-mm-dd.");
                 return;
             }
@@ -181,6 +188,7 @@ public class TaskService {
             System.out.println("Due Date: " + task.getDueDate());
             System.out.println("Status: " + task.getStatus());
             StepService.getAllSteps(task);
+            System.out.println("-------------------------------------------");
         }
 
     }
@@ -204,6 +212,7 @@ public class TaskService {
                 System.out.println("Due Date: " + task.getDueDate());
                 System.out.println("Status: " + task.getStatus());
                 StepService.getAllSteps(task);
+                System.out.println("-------------------------------------------");
             }
         }
         if (!foundIncompleteTask) {
@@ -249,5 +258,49 @@ public class TaskService {
             return null;
         }
     }
+
+    public static boolean isValidDate(String dateStr) {
+
+        String datePattern = "^[0-9]{4}-[0-9]{2}-[0-9]{2}$";
+        if (!dateStr.matches(datePattern)) {
+            return false;
+        }
+
+        try {
+            String[] parts = dateStr.split("-");
+            String year = parts[0];
+            String month = parts[1];
+            String day = parts[2];
+
+            int yearInt = Integer.parseInt(year);
+            int monthInt = Integer.parseInt(month);
+            int dayInt = Integer.parseInt(day);
+
+            if (monthInt < 01 || monthInt > 12) {
+                return false;
+            }
+
+            ArrayList<Integer> daysInMonth = new ArrayList<>
+                    (Arrays.asList(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31));
+
+
+            if (dayInt < 01 || dayInt > daysInMonth.get(monthInt - 1)) {
+                return false;
+            }
+
+            LocalDate today = LocalDate.now();
+            LocalDate date = LocalDate.of(yearInt, monthInt, dayInt);
+
+            if (date.isBefore(today)) {
+                return false;
+            }
+
+            return true;
+
+        } catch (NumberFormatException | DateTimeException e) {
+            return false;
+        }
+    }
+
 
 }

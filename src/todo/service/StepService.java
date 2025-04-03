@@ -100,7 +100,6 @@ public class StepService {
                         Database.update(step);
                         if (allStepsComplete((Task) Database.get(step.getTaskRef()))) {
                             TaskService.setAsCompleted((Task) Database.get(step.getTaskRef()));
-                            System.out.println("mamamamamamaamamama");
                         }
                         break;
                     default:

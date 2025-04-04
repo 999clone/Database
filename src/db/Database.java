@@ -79,7 +79,7 @@ public class Database {
 
     public static void registerValidator(int entityCode, Validator validator) {
         if (validators.containsValue(entityCode)) {
-            throw new IllegalArgumentException("Entity with code " + entityCode + " already exists");
+            throw new IllegalArgumentException("Validator with code " + entityCode + " already exists");
         }
         validators.put(entityCode, validator);
     }

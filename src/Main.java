@@ -1,7 +1,11 @@
 
+import db.Database;
+import todo.entity.Step;
 import todo.entity.Task;
 import todo.service.StepService;
 import todo.service.TaskService;
+import todo.validator.StepValidator;
+import todo.validator.TaskValidator;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,6 +16,8 @@ public class Main {
     public static void main(String[] args) throws ParseException {
         Scanner scanner = new Scanner(System.in);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Database.registerValidator(new Task().getEntityCode(), new TaskValidator());
+        Database.registerValidator(new Step().getEntityCode(), new StepValidator());
         while (true) {
             System.out.print("Enter command: ");
             String command = scanner.nextLine();

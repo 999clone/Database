@@ -42,8 +42,6 @@ public class TaskService {
             task.setDescription(description);
             task.setDueDate(dueDate);
 
-            checkTaskValidity(task);
-
             saveTask(task);
 
         }catch (IllegalArgumentException e){
@@ -127,16 +125,6 @@ public class TaskService {
         }catch (IllegalArgumentException e){
             System.out.println("Cannot update entity.");
         }catch (EntityNotFoundException e ) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    public static void checkTaskValidity(Task task) {
-        try {
-            TaskValidator taskValidator = new TaskValidator();
-            taskValidator.validate(task);
-        }catch (IllegalArgumentException e){
-            System.out.println("Cannot add task.");
             System.out.println(e.getMessage());
         }
     }

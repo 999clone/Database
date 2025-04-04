@@ -28,7 +28,6 @@ public class StepService {
             step.setTitle(title);
             step.setTaskRef(taskRef);
 
-            checkStepValidity(step);
 
             saveStep(step);
         } catch (InputMismatchException | NumberFormatException e) {
@@ -39,12 +38,6 @@ public class StepService {
         }catch (EntityNotFoundException e){
             System.out.println(e.getMessage());
         }
-
-    }
-
-    public static void checkStepValidity(Step step) {
-        StepValidator validator = new StepValidator();
-        validator.validate(step);
 
     }
 

@@ -2,6 +2,7 @@ package todo.entity;
 
 import db.Entity;
 import db.Trackable;
+import todo.service.TaskService;
 
 import java.util.Date;
 
@@ -38,6 +39,8 @@ public class Step extends Entity implements Trackable {
 
     @Override
     public void setCreationDate(Date date) {
+        if (!TaskService.isValidDate(date.toString()))
+            throw new IllegalArgumentException("Invalid date");
         this.creationDate = date;
     }
 
@@ -48,6 +51,8 @@ public class Step extends Entity implements Trackable {
 
     @Override
     public void setLastModificationDate(Date date) {
+        if (!TaskService.isValidDate(date.toString()))
+            throw new IllegalArgumentException("Invalid date");
         this.lastModificationDate = date;
     }
 

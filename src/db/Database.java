@@ -90,18 +90,17 @@ public class Database {
     }
 
     public static void registerSerializer(int entityCode, Serializer serializer) {
-        if (validators.containsKey(entityCode)) {
+        if (serializers.containsKey(entityCode)) {
             throw new IllegalArgumentException("Validator with code " + entityCode + " already exists");
         }
         serializers.put(entityCode, serializer);
     }
 
     public static void save() {
-        try {
-            String ss = "";
-            BufferedWriter writer = new BufferedWriter(new FileWriter("db.txt"));
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("db.txt")))
+        {
             for (Entity e : entities) {
-                Serializer serializer = serializers.get(e.getEntityCode());
+                String ss = "";
                 if (e instanceof Task) {
                     TaskSerialazer taskSerialazer = new TaskSerialazer();
                     ss = taskSerialazer.serialize(e);
@@ -112,7 +111,6 @@ public class Database {
                 }
                     writer.write(ss);
                     writer.newLine();
-                    System.out.println("Saving data...");
                 }
 
             } catch (IOException ex) {
@@ -129,10 +127,8 @@ public class Database {
                 String[] parts = line.split(";");
                 int entityCode = Integer.parseInt(parts[0]);
                 Serializer serializer = serializers.get(entityCode);
-                System.out.println("Loading data...");
                 if (serializer != null) {
                     Entity e = serializer.deserialize(line);
-                    System.out.println("Loading Database...");
                     Database.add(e);
                 }
             }

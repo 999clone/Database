@@ -13,6 +13,7 @@ public class Task extends Entity implements Trackable {
     private Status status;
     private Date creationDate;
     private Date lastModificationDate;
+    private int entityCode;
 
     public enum Status {
         NOT_STARTED,
@@ -68,4 +69,9 @@ public class Task extends Entity implements Trackable {
     public int getEntityCode() {
         return 12;
     }
+
+    public void setEntityCode(int entityCode) {
+        this.entityCode = entityCode;
+    }
 }
+

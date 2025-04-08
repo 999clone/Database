@@ -3,7 +3,11 @@ package db;
 import db.exception.EntityNotFoundException;
 import example.HumanValidator;
 import todo.entity.Step;
+import todo.entity.Task;
+import todo.serialazer.StepSerialazer;
+import todo.serialazer.TaskSerialazer;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -11,6 +15,7 @@ import java.util.HashMap;
 public class Database {
     private static ArrayList<Entity> entities = new ArrayList<>();
     private static HashMap<Integer, Validator> validators = new HashMap<>();
+    private static HashMap<Integer, Serializer> serializers = new HashMap<>();
     public static int UUID = 1000;
 
     public static void add(Entity e) {
@@ -83,6 +88,62 @@ public class Database {
         }
         validators.put(entityCode, validator);
     }
+
+    public static void registerSerializer(int entityCode, Serializer serializer) {
+        if (validators.containsKey(entityCode)) {
+            throw new IllegalArgumentException("Validator with code " + entityCode + " already exists");
+        }
+        serializers.put(entityCode, serializer);
+    }
+
+    public static void save() {
+        try {
+            String ss = "";
+            BufferedWriter writer = new BufferedWriter(new FileWriter("db.txt"));
+            for (Entity e : entities) {
+                Serializer serializer = serializers.get(e.getEntityCode());
+                if (e instanceof Task) {
+                    TaskSerialazer taskSerialazer = new TaskSerialazer();
+                    ss = taskSerialazer.serialize(e);
+                }
+                if (e instanceof Step) {
+                    StepSerialazer stepSerialazer = new StepSerialazer();
+                    ss = stepSerialazer.serialize(e);
+                }
+                    writer.write(ss);
+                    writer.newLine();
+                    System.out.println("Saving data...");
+                }
+
+            } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public static void load() {
+        try {
+
+            BufferedReader reader = new BufferedReader(new FileReader("db.txt"));
+            String line;
+            while ((line = reader.readLine() )!= null){
+                String[] parts = line.split(";");
+                int entityCode = Integer.parseInt(parts[0]);
+                Serializer serializer = serializers.get(entityCode);
+                System.out.println("Loading data...");
+                if (serializer != null) {
+                    Entity e = serializer.deserialize(line);
+                    System.out.println("Loading Database...");
+                    Database.add(e);
+                }
+            }
+
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static ArrayList<Entity> getAll(int entityCode) {
         ArrayList<Entity> result = new ArrayList<>();
         for (Entity e : entities) {
